@@ -1,0 +1,7 @@
+@for (validation of messages(name); track validation) {
+  <ng-container>
+    @if (hasError(validation.type)) {
+      <app-error-message [error]="validation.message"/>
+    }
+  </ng-container>
+}
