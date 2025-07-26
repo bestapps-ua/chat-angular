@@ -1,14 +1,15 @@
 import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideStore } from '@ngrx/store';
+import {provideState, provideStore} from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { metaReducers, reducers } from './store';
-import {ChatRoomsEffects} from './chat-room/store/chat-rooms/chat-rooms.effects';
+import { metaReducers, reducers } from './entities/store';
+import {ChatRoomsEffects} from './entities/store/chat-rooms/chat-rooms.effects';
+import {AuthEffects} from './entities/store/auth/auth.effects';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -24,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
-    provideEffects(ChatRoomsEffects),
+    provideEffects([AuthEffects, ChatRoomsEffects]),
     provideHttpClient(),
   ]
 };
