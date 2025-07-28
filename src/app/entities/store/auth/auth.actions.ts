@@ -19,5 +19,9 @@ export const AuthActions = createActionGroup({
     'Check Success': success,
     'Check Failure': error,
     'Logout': emptyProps(),
+    'Load Token': emptyProps(),
+    'Clear Token': emptyProps(),
+    'Load Token Success': success,
+    'Load Token Failure': error,
   },
 });

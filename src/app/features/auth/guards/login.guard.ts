@@ -9,8 +9,8 @@ import {map} from 'rxjs/operators';
 import appRoutes from '../../../shared/routes/routes';
 
 export const loginGuard: CanActivateFn = (route, state): Observable<boolean | UrlTree> => {
-  const router = inject(Router);
-  const store = inject(Store<AppState>);
+  const router: Router = inject(Router);
+  const store: Store<AppState> = inject(Store<AppState>);
 
   return store.select(selectAuthenticated).pipe(
     take(1),

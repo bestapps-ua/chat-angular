@@ -1,7 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ApiDataInterface} from '../interfaces/api-data.interface';
 import {environment} from '../../../environments';
 
 
@@ -13,8 +12,6 @@ export class ApiService {
   public apiUrl = environment.apiUrl;
 
   private initHeaders(reqOpts: any) {
-    const authData = this.getAuth();
-
     if (!reqOpts) {
       reqOpts = {
         params: new HttpParams(),
@@ -24,8 +21,6 @@ export class ApiService {
     if (!reqOpts.headers) {
       reqOpts.headers = new HttpHeaders();
     }
-
-    reqOpts.headers = reqOpts.headers.set('Authorization', `bearer ${authData.token}`);
   }
 
   get<T>(endpoint = '', params: any = {}, reqOpts: { [key: string]: any }): Observable<T> {
@@ -99,10 +94,4 @@ export class ApiService {
     return this.put<T>(url, params, reqOpts);
   }
 
-  getAuth() {
-    //TODO: get token
-    return {
-      token: '',
-    }
-  }
 }

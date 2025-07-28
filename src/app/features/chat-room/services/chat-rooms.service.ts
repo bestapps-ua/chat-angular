@@ -10,12 +10,6 @@ import {delay, map} from 'rxjs/operators';
 export class ChatRoomsService {
   private apiUrl = '/api/chatrooms';
 
-  constructor(
-    private http: HttpClient
-  ) {
-
-  }
-
   getChatRooms(): Observable<ChatRoomInterface[]> {
 
     const mockChatRooms: ChatRoomInterface[] = [

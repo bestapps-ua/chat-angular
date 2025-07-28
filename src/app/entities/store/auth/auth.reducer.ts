@@ -1,5 +1,5 @@
-import {Action, createFeature, createReducer, on} from '@ngrx/store';
-import {AuthState, initialAuthState} from './auth.state';
+import {createReducer, on} from '@ngrx/store';
+import {initialAuthState} from './auth.state';
 import {AuthActions} from './auth.actions';
 
 export const authReducer = createReducer(
@@ -21,12 +21,7 @@ export const authReducer = createReducer(
     error: null,
   })),
   on(AuthActions.logout, (state) => ({
-    ...state,
-    user: null,
-    token: null,
-    isLoading: false,
-    isAuthenticated: false,
-    error: null,
+    ...initialAuthState
   })),
   on(AuthActions.loginSuccess, (state, {token, user}) => ({
     ...state,
@@ -53,5 +48,25 @@ export const authReducer = createReducer(
     ...state,
     isLoading: false,
     error,
+  })),
+  on(AuthActions.loadToken, state => ({
+    ...state,
+    isLoading: true,
+    error: null,
+  })),
+  on(AuthActions.loadTokenSuccess, (state, { token, user }) => ({
+    ...state,
+    isAuthenticated: true,
+    user,
+    token,
+    isLoading: false,
+    error: null,
+  })),
+  on(AuthActions.loadTokenFailure, (state, { error }) => ({
+    ...initialAuthState,
+    //error,
+  })),
+  on(AuthActions.clearToken, state => ({
+    ...initialAuthState
   })),
 );
