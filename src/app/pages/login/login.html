@@ -28,4 +28,7 @@
     <app-error-form-message [form]="form" [validationMessages]="validationMessages" [name]="'password'"/>
     <button type="submit" [disabled]="!form.valid">Login</button>
   </form>
+  <div class="links">
+    <a routerLink="/{{appRoutes.registerPage}}">Register</a>
+  </div>
 </div>

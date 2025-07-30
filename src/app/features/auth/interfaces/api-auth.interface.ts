@@ -1,7 +1,7 @@
 import {ApiDataInterface} from '../../../shared/interfaces/api-data.interface';
-import {UserInterface} from '../../../shared/interfaces/user.interface';
+import {ProfileInterface} from '../../../shared/interfaces/profileInterface';
 
 export interface ApiAuthInterface extends ApiDataInterface{
   accessToken: string;
-  user: UserInterface;
+  user: ProfileInterface;
 }

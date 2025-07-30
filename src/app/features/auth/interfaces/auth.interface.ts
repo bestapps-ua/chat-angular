@@ -1,7 +1,7 @@
-import {UserInterface} from '../../../shared/interfaces/user.interface';
+import {ProfileInterface} from '../../../shared/interfaces/profileInterface';
 
 export interface AuthInterface {
-  user: UserInterface | null;
+  user: ProfileInterface | null;
   token: string | null;
   isAuthenticated: boolean;
 }

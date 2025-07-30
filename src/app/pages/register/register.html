@@ -10,6 +10,7 @@
     <div class="form-group">
       <label for="email">Email:</label>
       <input
+        autocomplete="off"
         type="email"
         id="email"
         formControlName="email"
@@ -20,6 +21,7 @@
     <div class="form-group">
       <label for="username">Username:</label>
       <input
+        autocomplete="off"
         type="text"
         id="username"
         formControlName="username"
@@ -30,12 +32,16 @@
     <div class="form-group">
       <label for="password">Password:</label>
       <input
+        autocomplete="off"
         type="password"
         id="password"
         formControlName="password"
       />
     </div>
     <app-error-form-message [form]="form" [validationMessages]="validationMessages" [name]="'password'"/>
-    <button type="submit" [disabled]="!form.valid">Login</button>
+    <button type="submit" [disabled]="!form.valid">Register</button>
   </form>
+  <div class="links">
+    <a routerLink="/{{appRoutes.loginPage}}">Login</a>
+  </div>
 </div>

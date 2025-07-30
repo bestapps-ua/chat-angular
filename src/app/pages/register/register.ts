@@ -8,15 +8,19 @@ import {AppState} from '../../entities/store';
 import {Observable} from 'rxjs';
 import {selectAuthError} from '../../entities/store/auth/auth.selectors';
 import {AuthActions} from '../../entities/store/auth/auth.actions';
+import {Router, RouterLink} from '@angular/router';
+import appRoutes from '../../shared/routes/routes';
+import Routes from '../../shared/routes/routes';
 
 @Component({
   selector: 'app-register',
-    imports: [
-        AsyncPipe,
-        ErrorFormMessageComponent,
-        ErrorMessage,
-        ReactiveFormsModule
-    ],
+  imports: [
+    AsyncPipe,
+    ErrorFormMessageComponent,
+    ErrorMessage,
+    ReactiveFormsModule,
+    RouterLink
+  ],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
@@ -39,6 +43,8 @@ export class Register implements OnInit{
   };
 
   private store = inject(Store<AppState>);
+  router: Router = inject(Router);
+  readonly appRoutes = Routes;
 
   error$: Observable<string | null> = this.store.select(selectAuthError);
 
@@ -60,4 +66,6 @@ export class Register implements OnInit{
       password: this.form.value.password,
     }));
   }
+
+
 }

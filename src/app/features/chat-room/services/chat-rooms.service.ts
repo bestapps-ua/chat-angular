@@ -1,28 +1,15 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { ChatRoomInterface } from '../interfaces/chat-room.interface';
-import {delay, map} from 'rxjs/operators';
+import {inject, Injectable} from '@angular/core';
+import {Observable, of, tap} from 'rxjs';
+import {ChatRoomInterface} from '../interfaces/chat-room.interface';
+import {ApiService} from '../../../shared/services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatRoomsService {
-  private apiUrl = '/api/chatrooms';
+  apiService: ApiService = inject(ApiService);
 
   getChatRooms(): Observable<ChatRoomInterface[]> {
-
-    const mockChatRooms: ChatRoomInterface[] = [
-      { uid: '1', name: 'General Chat',},
-      { uid: '2', name: 'Angular Devs',  },
-      { uid: '3', name: 'NgRx Fanatics', },
-    ];
-    return of(mockChatRooms).pipe(
-      delay(1000),
-      map(data => {
-        console.log('ChatRoomsService: Data being emitted from getChatRooms():', data);
-        return data;
-      })
-    );
+    return this.apiService.callGet<ChatRoomInterface[]>('chat/rooms');
   }
 }

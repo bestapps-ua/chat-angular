@@ -52,3 +52,7 @@ button[type="submit"]:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
+.links {
+  text-align: center;
+}

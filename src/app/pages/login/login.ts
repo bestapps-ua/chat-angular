@@ -8,6 +8,9 @@ import {Observable} from 'rxjs';
 import {selectAuthError, selectAuthToken} from '../../entities/store/auth/auth.selectors';
 import {AsyncPipe} from '@angular/common';
 import {ErrorMessage} from '../../widgets/error/message/error-message';
+import appRoutes from '../../shared/routes/routes';
+import {Router, RouterLink} from '@angular/router';
+import Routes from '../../shared/routes/routes';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +18,8 @@ import {ErrorMessage} from '../../widgets/error/message/error-message';
     ReactiveFormsModule,
     ErrorFormMessageComponent,
     AsyncPipe,
-    ErrorMessage
+    ErrorMessage,
+    RouterLink
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
@@ -36,6 +40,8 @@ export class Login implements OnInit {
   };
 
   private store = inject(Store<AppState>);
+  router: Router = inject(Router);
+  readonly appRoutes = Routes;
 
   error$: Observable<string | null> = this.store.select(selectAuthError);
 
@@ -52,4 +58,5 @@ export class Login implements OnInit {
     }
     this.store.dispatch(AuthActions.login({email: this.form.value.email, password: this.form.value.password}));
   }
+
 }

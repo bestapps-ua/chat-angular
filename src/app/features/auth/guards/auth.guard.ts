@@ -16,7 +16,7 @@ export const authGuard: CanActivateFn = (route, state): Observable<boolean | Url
       if (isAuthenticated) {
         return true;
       } else {
-        return router.parseUrl(`/${appRoutes.authRoute}`);
+         return router.parseUrl(`/${appRoutes.authRoute}`);
       }
     })
   );

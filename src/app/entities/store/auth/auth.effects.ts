@@ -6,6 +6,7 @@ import {AuthService} from '../../../features/auth/services/auth.service';
 import {AuthActions} from './auth.actions';
 import {Router} from '@angular/router';
 import appRoutes from '../../../shared/routes/routes';
+import {getErrorMessage} from '../../helpers/error.message';
 
 
 @Injectable()
@@ -23,11 +24,11 @@ export class AuthEffects {
               return AuthActions.loginSuccess({token: data.accessToken, user: data.user})
             }),
             catchError((error) =>
-              of(AuthActions.loginFailure({error: error.error?.message || error.error}))
+              of(AuthActions.loginFailure({error: getErrorMessage(error)}))
+              )
             )
           )
         )
-      )
     }
   );
 
@@ -40,7 +41,7 @@ export class AuthEffects {
               return AuthActions.registerSuccess({token: data.accessToken, user: {email: '', role: '', uid: ''}})
             }),
             catchError((error) =>
-              of(AuthActions.registerFailure({error: error.error?.message || error.error}))
+              of(AuthActions.registerFailure({error: getErrorMessage(error)}))
             )
           )
         )
@@ -91,17 +92,17 @@ export class AuthEffects {
           return this.authService.validateTokenAndGetUser().pipe(
             map(user => {
               if (user) {
-                return AuthActions.loadTokenSuccess({ token, user });
+                return AuthActions.loadTokenSuccess({token, user});
               } else {
-                return AuthActions.loadTokenFailure({ error: 'Invalid or expired token' })
+                return AuthActions.loadTokenFailure({error: 'Invalid or expired token'})
               }
             }),
             catchError(error => {
-              return of(AuthActions.loadTokenFailure({ error }));
+              return of(AuthActions.loadTokenFailure({error}));
             }),
           );
         } else {
-          return of(AuthActions.loadTokenFailure({ error: 'No token found in local storage' }));
+          return of(AuthActions.loadTokenFailure({error: 'No token found in local storage'}));
         }
       }),
     )

@@ -1,9 +1,9 @@
 import {createActionGroup, emptyProps, props} from '@ngrx/store';
 
 import {authName} from './auth.constants';
-import {UserInterface} from '../../../shared/interfaces/user.interface';
+import {ProfileInterface} from '../../../shared/interfaces/profileInterface';
 
-const success = props<{ token: string, user: UserInterface }>();
+const success = props<{ token: string, user: ProfileInterface }>();
 const error =  props<{ error: string }>();
 
 export const AuthActions = createActionGroup({
