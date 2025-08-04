@@ -8,6 +8,11 @@ export const ChatRoomsActions = createActionGroup({
     'Load': emptyProps(),
     'Load Success': props<{ chatRooms: ChatRoomInterface[] }>(),
     'Load Failure': props<{ error: string }>(),
+
     'Select Room': props<{ roomId: string }>(),
+
+    'Create':  props<{ name: string }>(),
+    'Create Success': props<{ chatRoom: ChatRoomInterface }>(),
+    'Create Failure': props<{ error: string }>(),
   },
 });

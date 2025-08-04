@@ -1,0 +1,12 @@
+<div class="flex w-full justify-end mt-4">
+  @for (button of buttons; track button.action) {
+    <p-button
+      [disabled]="!active"
+      type="button"
+      [label]="button.label"
+      [icon]="button.icon"
+      [class]="button.styleClass"
+      (click)="onButtonClick(button.action)"
+    />
+  }
+</div>

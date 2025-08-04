@@ -1,0 +1,17 @@
+@if (chatRoomsService.isLoading$ | async) {
+  <div>Loading chat rooms...</div>
+} @else if (chatRoomsService.error$ | async) {
+  <div class="error-message">Error: {{ chatRoomsService.error$ | async }}</div>
+} @else if ((chatRoomsService.chatRooms$ | async)?.length) {
+  <ul>
+    @for (room of (chatRoomsService.chatRooms$ | async); track room.uid) {
+      <li (click)="onSelectRoom(room.uid)"
+          [class.selected]="(chatRoomsService.selectedRoom$ | async)?.uid === room.uid">
+        <h3 >{{ room.name }}</h3>
+      </li>
+    }
+  </ul>
+} @else {
+  <p>No chat rooms found.</p>
+}
+

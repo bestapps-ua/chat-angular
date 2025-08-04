@@ -1,0 +1,5 @@
+@let room = chatRoomsService.selectedRoom$ | async;
+@if (room) {
+  <h3>{{ room.name }}</h3>
+}
+

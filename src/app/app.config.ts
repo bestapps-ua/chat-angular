@@ -20,8 +20,11 @@ import {AuthEffects} from './entities/store/auth/auth.effects';
 import {authInterceptor} from './features/auth/interceptors/auth.interceptor';
 import {AuthActions} from './entities/store/auth/auth.actions';
 import {finalize, firstValueFrom, of, race, take, tap} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {AuthService} from './features/auth/services/auth.service';
+import {providePrimeNG} from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
+import {DialogService} from 'primeng/dynamicdialog';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 
 async function initializeApp(): Promise<void> {
   const store = inject(Store<AppState>);
@@ -63,5 +66,12 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([authInterceptor])
     ),
     provideAppInitializer(initializeApp),
+    providePrimeNG({
+      theme: {
+        preset: Aura
+      }
+    }),
+    DialogService,
+    provideAnimationsAsync(),
   ]
 };
