@@ -27,7 +27,7 @@ export const chatRoomsReducer = createReducer(
     error: null,
   })),
   on(ChatRoomsActions.createSuccess, (state, {chatRoom}) => {
-    return chatRoomAdapter.addOne(chatRoom, {...state, isLoading: false, error: null})
+    return chatRoomAdapter.addOne(chatRoom, {...state, isLoading: false, error: null, selectedRoomId: chatRoom.uid})
   }),
   on(ChatRoomsActions.createFailure, (state, {error}) => ({
     ...state,

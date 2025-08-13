@@ -20,7 +20,6 @@ import {ChatRoomsActions} from '../../entities/store/chat-rooms/chat-rooms.actio
     ErrorFormMessageComponent,
     ErrorMessage,
     ReactiveFormsModule,
-    RouterLink
   ],
   templateUrl: './chat-create-component.html',
   styleUrl: './chat-create-component.css'

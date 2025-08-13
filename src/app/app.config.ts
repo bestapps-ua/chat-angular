@@ -68,7 +68,10 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(initializeApp),
     providePrimeNG({
       theme: {
-        preset: Aura
+        preset: Aura,
+        options: {
+          darkModeSelector: 'none',
+        },
       }
     }),
     DialogService,

@@ -32,7 +32,7 @@ export class ChatMessageService {
       return throwError(() => new Error('User not authenticated.'));
     }
 
-    const userPrivateKey$ = this.authService.userPrivateKey$; // An Observable holding the CryptoKey
+    const userPrivateKey$ = this.authService.userPrivateKey$;
 
     const allParticipantIds = [...new Set([...recipientUserIds, currentUserId])];
     const publicKeys$ = this.userService.getPublicKeysForConversation(conversationId);

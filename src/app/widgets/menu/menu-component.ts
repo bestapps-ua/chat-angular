@@ -11,19 +11,16 @@ import {Menu} from 'primeng/menu';
 @Component({
   selector: 'app-menu',
   imports: [
-    InputText,
-    Menubar,
-    Ripple,
     DynamicDialogModule,
-    Button,
     Menu,
+    Button,
   ],
   providers: [],
   templateUrl: './menu-component.html',
   styleUrl: './menu-component.css'
 })
 export class MenuComponent implements OnInit {
-  items: MenuItem[] | undefined;
+  items: MenuItem[] = [];
 
   chatRoomsService: ChatRoomsService = inject(ChatRoomsService);
 
