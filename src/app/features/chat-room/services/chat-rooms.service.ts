@@ -5,13 +5,15 @@ import {ApiService} from '../../../shared/services/api.service';
 import {
   selectAll,
   selectChatRoomsError,
-  selectChatRoomsLoading, selectSelectedChatRoom
+  selectChatRoomsLoading,
+  selectSelectedChatRoom
 } from '../../../entities/store/chat-rooms/chat-rooms.selectors';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../entities/store';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {ChatCreateComponent} from '../../../widgets/chat-create/chat-create-component';
 import {DialogFooterComponent} from '../../../widgets/dialog/dialog-footer/dialog-footer-component';
+import {ChatRoomKeyInterface} from '../interfaces/chat-room-key.interface';
 
 
 
@@ -52,8 +54,8 @@ export class ChatRoomsService {
       },
       data: {
         buttons: [
-          { label: 'Save', icon: 'pi pi-check', styleClass: 'p-button-success', action: 'save' },
-          { label: 'Close', icon: 'pi pi-times', styleClass: 'p-button-danger', action: 'close' },
+          { label: 'Save', icon: 'pi pi-check', action: 'save' },
+          { label: 'Close', icon: 'pi pi-times', styleClass: 'p-button-secondary', action: 'close' },
         ],
       },
       templates: {
@@ -66,5 +68,10 @@ export class ChatRoomsService {
         console.log(data);
       }
     });
+  }
+
+  getRoomPublicKeys(roomId: string): Observable<ChatRoomKeyInterface[]> {
+    console.log('HERE');
+    return this.apiService.callGet<ChatRoomKeyInterface[]>(`chat/rooms/${roomId}/public-keys`);
   }
 }

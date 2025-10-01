@@ -22,7 +22,7 @@ export class DialogFooterComponent implements OnInit, OnDestroy {
   config: DynamicDialogConfig = inject(DynamicDialogConfig);
 
   buttons: DialogButtonInterface[] = [
-    {label: 'Close', icon: 'pi pi-times', styleClass: 'p-button-error', action: 'close'},
+    {label: 'Close', icon: 'pi pi-times', styleClass: 'p-button-secondary', action: 'close'},
   ];
 
   private destroy$ = new Subject<void>();

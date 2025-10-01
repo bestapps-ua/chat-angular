@@ -36,7 +36,7 @@ export class PemUtils {
       'pkcs8',
       binaryDer,
       { name: 'RSA-OAEP', hash: 'SHA-256' },
-      true, // Private key should be extractable if we store it encrypted
+      true,
       ['decrypt']
     );
   }

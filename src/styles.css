@@ -1,5 +1,6 @@
-@import "tailwindcss";
 @import "primeicons/primeicons.css";
+@import "tailwindcss";
+@plugin "tailwindcss-primeui";
 
 body {
   padding: 0;

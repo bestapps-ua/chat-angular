@@ -1,2 +1,6 @@
-<p>chat-room-messages-component works!</p>
+@for(message of (messages$ | async); track message.uid) {
+  <div>
+    {{message.uid}}
+  </div>
+}
 

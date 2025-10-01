@@ -5,6 +5,8 @@ import {authFeatureKey} from './auth/auth.constants';
 import {AuthState} from './auth/auth.state';
 import {chatRoomsReducer} from './chat-rooms/chat-rooms.reducer';
 import {authReducer} from './auth/auth.reducer';
+import {chatMessagesReducer} from './chat-messages/chat-messages.reducer';
+import {chatMessagesFeatureKey} from './chat-messages/chat-messages.constants';
 
 export interface AppState {
   [authFeatureKey]: AuthState;
@@ -14,6 +16,7 @@ export interface AppState {
 export const reducers: ActionReducerMap<AppState> = {
   [authFeatureKey]: authReducer,
   [chatRoomsFeatureKey]: chatRoomsReducer,
+  [chatMessagesFeatureKey]: chatMessagesReducer,
 }as ActionReducerMap<AppState, Action<string>>;
 
 export function debugReducer(reducer: ActionReducer<any, Action<string>>): ActionReducer<any, Action<string>> {

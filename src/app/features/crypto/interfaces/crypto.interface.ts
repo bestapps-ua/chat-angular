@@ -23,3 +23,4 @@ export interface InternalKeyPair {
   publicKey: CryptoKey;
   privateKey: CryptoKey;
 }
+

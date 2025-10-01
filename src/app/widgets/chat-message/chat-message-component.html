@@ -1,0 +1,12 @@
+<div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="message">Message:</label>
+      <textarea pTextarea formControlName="message">
+
+      </textarea>
+      <p-button (click)="onSubmit()" class="absolute bottom-[0.7rem] right-[0.5rem]" icon="pi pi-send" />
+    </div>
+    <app-error-form-message [form]="form" [validationMessages]="validationMessages" [name]="'message'"/>
+  </form>
+</div>

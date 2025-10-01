@@ -79,7 +79,8 @@ export class KeyStorageService {
 
   // Loads and decrypts the private key using the password
   loadAndDecryptPrivateKey(userId: string, password: string): Observable<CryptoKey> {
-    return from(idb.get(`${this.PRIVATE_KEY_STORE}_${userId}`)).pipe(
+    console.log('loadAndDecryptPrivateKey', userId, password);
+    return from(this.getPrivateKey(userId)).pipe(
       switchMap(encryptedPem => {
         if (!encryptedPem) {
           return throwError(() => new Error('Encrypted private key not found for user.'));
@@ -96,5 +97,33 @@ export class KeyStorageService {
     );
   }
 
-  // ... other methods like deleteKey, etc.
+  async getPrivateKey(userId: string) {
+    return idb.get(`${this.PRIVATE_KEY_STORE}_${userId}`);
+  }
+
+  // Saves the PEM-encoded private key directly to IndexedDB without encryption
+  savePrivateKey(userId: string, privateKeyPem: string): Observable<void> {
+    return from(idb.set(`${this.PRIVATE_KEY_STORE}_${userId}`, privateKeyPem)).pipe(
+      catchError(error => {
+        console.error('Error saving private key:', error);
+        return throwError(() => new Error('Could not save private key.'));
+      })
+    );
+  }
+
+  // Loads the private key directly from IndexedDB and imports it as CryptoKey
+  loadPrivateKey(userId: string): Observable<CryptoKey> {
+    return from(idb.get(`${this.PRIVATE_KEY_STORE}_${userId}`)).pipe(
+      switchMap(privateKeyPem => {
+        if (!privateKeyPem) {
+          return throwError(() => new Error('Private key not found for user.'));
+        }
+        return from(PemUtils.importPrivateKeyFromPEM(privateKeyPem));
+      }),
+      catchError(error => {
+        console.error('Error loading private key:', error);
+        return throwError(() => new Error('Private key not found or invalid.'));
+      })
+    );
+  }
 }

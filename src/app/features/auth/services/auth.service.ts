@@ -3,6 +3,7 @@ import {catchError, map, pluck} from 'rxjs/operators';
 import {ApiService} from '../../../shared/services/api.service';
 import {ApiAuthInterface} from '../interfaces/api-auth.interface';
 import {BehaviorSubject, Observable, of, switchMap, tap} from 'rxjs';
+import {firstValueFrom} from 'rxjs';
 import {ProfileInterface} from '../../../shared/interfaces/profileInterface';
 import {LocalStorageService} from '../../../shared/services/local-storage.service';
 import {CryptoService} from '../../crypto/services/crypto.service';
@@ -11,6 +12,8 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../../entities/store';
 import {selectAuthUser} from '../../../entities/store/auth/auth.selectors';
 import {toSignal} from '@angular/core/rxjs-interop';
+import {AuthActions} from '../../../entities/store/auth/auth.actions';
+import {UserInterface} from '../../user/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +33,19 @@ export class AuthService {
 
   public userPrivateKey$ = this.userPrivateKeySubject.asObservable();
 
+
   login(email: string, password: string) {
     return this.apiService.callPost<ApiAuthInterface>('auth/sign-in', {email, password}).pipe(
-      tap(response => {
+      tap(async response => {
         const token = response.accessToken;
         if (token) {
+          try {
+            const privateKey = await firstValueFrom(this.keyStorageService.loadPrivateKey(response.user.uid));
+            this.userPrivateKeySubject.next(privateKey);
+          } catch (error) {
+            console.error('Failed to load private key:', error);
+            this.userPrivateKeySubject.next(null);
+          }
           this.saveToken(token);
         }
       })
@@ -47,24 +58,28 @@ export class AuthService {
         this.userPrivateKeySubject.next(keyPair.privateKey);
         return this.cryptoService.exportKeyToPem(keyPair.publicKey, 'PUBLIC').pipe(
           switchMap(publicKeyPem => {
-            return this.apiService.callPost<ApiAuthInterface>('auth/sign-up',
-              {
-                email,
-                username,
-                password,
-                publicKey: publicKeyPem,
-              }
-            ).pipe(
-              tap(response => {
-                this.keyStorageService.saveEncryptedPrivateKey(response.user.uid, publicKeyPem, password).subscribe({
-                  next: () => console.log('Private key saved securely after registration.'),
-                  error: err => console.error('Error saving private key:', err)
-                });
+            return this.cryptoService.exportKeyToPem(keyPair.privateKey, 'PRIVATE').pipe(
+              switchMap(privateKeyPem => {
+                return this.apiService.callPost<ApiAuthInterface>('auth/sign-up',
+                  {
+                    email,
+                    username,
+                    password,
+                    publicKey: publicKeyPem,
+                  }
+                ).pipe(
+                  tap(response => {
+                    this.keyStorageService.savePrivateKey(response.user.uid, privateKeyPem).subscribe({
+                      next: () => console.log('Private key saved after registration.'),
+                      error: err => console.error('Error saving private key:', err)
+                    });
 
-                const token = response.accessToken;
-                if (token) {
-                  this.saveToken(token);
-                }
+                    const token = response.accessToken;
+                    if (token) {
+                      this.saveToken(token);
+                    }
+                  })
+                )
               })
             )
           }),
@@ -102,5 +117,18 @@ export class AuthService {
 
   getCurrentUserId(): string | undefined {
     return this.user()?.uid;
+  }
+
+  async loadProfile(user: ProfileInterface, token: string) {
+    // Load private key directly from IndexedDB without password
+    try {
+      const privateKey = await firstValueFrom(this.keyStorageService.loadPrivateKey(user.uid));
+      this.userPrivateKeySubject.next(privateKey);
+      console.log('loadProfile called - private key loaded from IndexedDB');
+    } catch (error) {
+      console.error('Failed to load private key during profile load:', error);
+      this.userPrivateKeySubject.next(null);
+    }
+    this.store.dispatch(AuthActions.loadTokenSuccess({ token, user }));
   }
 }

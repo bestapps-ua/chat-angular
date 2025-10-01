@@ -12,6 +12,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../entities/store';
 import {AuthActions} from '../../entities/store/auth/auth.actions';
 import {ChatRoomsActions} from '../../entities/store/chat-rooms/chat-rooms.actions';
+import {InputText} from 'primeng/inputtext';
 
 @Component({
   selector: 'app-chat-create',
@@ -20,6 +21,7 @@ import {ChatRoomsActions} from '../../entities/store/chat-rooms/chat-rooms.actio
     ErrorFormMessageComponent,
     ErrorMessage,
     ReactiveFormsModule,
+    InputText,
   ],
   templateUrl: './chat-create-component.html',
   styleUrl: './chat-create-component.css'

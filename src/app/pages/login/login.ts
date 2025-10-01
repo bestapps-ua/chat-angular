@@ -11,6 +11,7 @@ import {ErrorMessage} from '../../widgets/error/message/error-message';
 import appRoutes from '../../shared/routes/routes';
 import {Router, RouterLink} from '@angular/router';
 import Routes from '../../shared/routes/routes';
+import {Button, ButtonDirective} from 'primeng/button';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,9 @@ import Routes from '../../shared/routes/routes';
     ErrorFormMessageComponent,
     AsyncPipe,
     ErrorMessage,
-    RouterLink
+    RouterLink,
+    Button,
+    ButtonDirective
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'

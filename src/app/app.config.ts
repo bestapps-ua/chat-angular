@@ -22,9 +22,12 @@ import {AuthActions} from './entities/store/auth/auth.actions';
 import {finalize, firstValueFrom, of, race, take, tap} from 'rxjs';
 import {AuthService} from './features/auth/services/auth.service';
 import {providePrimeNG} from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
+import Lara from '@primeuix/themes/lara';
 import {DialogService} from 'primeng/dynamicdialog';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {definePreset} from '@primeuix/themes';
+import {ChatMessagesEffects} from './entities/store/chat-messages/chat-messages.effects';
+import {KeyStorageService} from './features/crypto/services/key-storage.service';
 
 async function initializeApp(): Promise<void> {
   const store = inject(Store<AppState>);
@@ -36,7 +39,7 @@ async function initializeApp(): Promise<void> {
     if (token) {
       const user = await firstValueFrom(authService.validateTokenAndGetUser());
       if (user) {
-        store.dispatch(AuthActions.loadTokenSuccess({ token, user }));
+        await authService.loadProfile(user, token);
       }
     }
     return Promise.resolve();
@@ -45,6 +48,23 @@ async function initializeApp(): Promise<void> {
   }
 }
 
+const MyPreset = definePreset(Lara, {
+  semantic: {
+    primary: {
+      50: '{blue.50}',
+      100: '{blue.100}',
+      200: '{blue.200}',
+      300: '{blue.300}',
+      400: '{blue.400}',
+      500: '{blue.500}',
+      600: '{blue.600}',
+      700: '{blue.700}',
+      800: '{blue.800}',
+      900: '{blue.900}',
+      950: '{blue.950}'
+    }
+  }
+});
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -61,18 +81,24 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
-    provideEffects([AuthEffects, ChatRoomsEffects]),
+    provideEffects([AuthEffects, ChatRoomsEffects, ChatMessagesEffects]),
     provideHttpClient(
       withInterceptors([authInterceptor])
     ),
     provideAppInitializer(initializeApp),
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: MyPreset,
         options: {
-          darkModeSelector: 'none',
+          darkModeSelector: 'light',
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme, base, primeng'
+          }
         },
-      }
+      },
+      ripple: true,                 // optional configuration
+      inputVariant: 'filled'        // optional
     }),
     DialogService,
     provideAnimationsAsync(),

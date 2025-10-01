@@ -12,7 +12,5 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getPublicKeysForConversation(conversationId: string): Observable<UserInterface[]> {
-    return this.http.get<UserInterface[]>(`${this.apiUrl}/conversation/${conversationId}/public-keys`);
-  }
+
 }

@@ -8,8 +8,14 @@
       <app-chat-room-list/>
     </div>
   </div>
-  <div class="messages">
-    <app-top-panel/>
-    <app-chat-room-messages/>
+  <div class="messages flex flex-col">
+    @let room = chatRoomsService.selectedRoom$ | async;
+    @if (room) {
+      <app-top-panel/>
+      <app-chat-room-messages [chatRoom]="room" class="flex-grow"/>
+      <app-chat-message [chatRoom]="room"/>
+    } @else {
+      Please select room
+    }
   </div>
 </div>
